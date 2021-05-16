@@ -21,7 +21,8 @@ RUN apt-get update -yq
 RUN pip3 install streamlit
 
 ADD app/* /opt/museum/
+ADD start.sh .
 
 EXPOSE 8501
 
-CMD streamlit run /opt/museum/app.py
+CMD ./start.sh
