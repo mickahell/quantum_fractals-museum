@@ -20,7 +20,6 @@ LABEL org.opencontainers.image.title="Quantum Museum" \
 RUN apt-get update -yq
 RUN pip3 install streamlit
 
-ADD conf/* ~/.streamlit/
 ADD app/* /opt/museum/
 
 EXPOSE 8501
