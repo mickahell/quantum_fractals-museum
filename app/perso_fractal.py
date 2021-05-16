@@ -14,9 +14,11 @@ def app():
     # App code
     # Slider option
     max_shots_slider = st.sidebar.slider("Number of shots", 1, 10, 2, 1)
+    perso = 0
     if st.sidebar.checkbox('Customize the angles'):
-        iterations = st.sidebar.slider("X", 0.0, 2 * pi, 0.0, 0.01)
-        separation = st.sidebar.slider("Z", 0.0, 2 * pi, pi, 0.01)
+        perso = 1
+        rot_x = st.sidebar.slider("X", 0.0, 2 * pi, 0.0, 0.01)
+        rot_z = st.sidebar.slider("Z", 0.0, 2 * pi, pi, 0.01)
 
     # Init Qasm simulator backend
     statevector_sim = Aer.get_backend("statevector_simulator")
@@ -53,8 +55,13 @@ def app():
     qc.h(init_q)
     for w in range(max_shots):
         for i in range(shots):
-            qc.rx(-pi / (shots - i), init_q)
-            qc.rz(pi / (shots / 8), init_q)
+            if perso == 1:
+                qc.rx(pi*rot_x, init_q)
+                qc.rz(pi*rot_z, init_q)
+            else:
+                qc.rx(-pi / (shots - i), init_q)
+                qc.rz(pi / (shots / 8), init_q)
+                
             z = complex_cal(qc, statevector_sim)
             if z != 0:
                 tab_temp.append(z)
